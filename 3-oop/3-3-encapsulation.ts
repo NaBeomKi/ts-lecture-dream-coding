@@ -41,4 +41,31 @@
 
   const maker = CoffeeMaker.makeMachine(32);
   console.log(maker);
+
+  class User {
+    private internalAge = 4;
+
+    constructor(private firstName: string, private lastName: string) {}
+
+    get fullName(): string {
+      return `${this.firstName} ${this.lastName}`;
+    }
+
+    get age(): number {
+      return this.internalAge;
+    }
+
+    set age(num: number) {
+      if (num < 0) {
+        throw new Error("Value for age should be greater than 0");
+      }
+      this.internalAge = num;
+    }
+  }
+
+  const user = new User("Na", "beomki");
+  console.log(user.fullName);
+  console.log(user.age);
+  user.age = 62;
+  console.log(user.age);
 }
