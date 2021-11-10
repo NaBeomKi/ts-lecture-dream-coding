@@ -8,7 +8,13 @@
     makeCoffee(shots: number): CoffeeCup;
   }
 
-  class CoffeeMachine implements CoffeeMaker {
+  interface CommercialCoffeeMaker {
+    makeCoffee(shots: number): CoffeeCup;
+    fillCoffeeBeans(beans: number): void;
+    clean(): void;
+  }
+
+  class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
     private static BEANS_GRAM_PER_SHOT: number = 7; // class level
     private coffeeBeans: number = 0; // instance (object) level
 
@@ -25,6 +31,10 @@
         throw new Error("value for beans should be greater than 0");
       }
       this.coffeeBeans += beans;
+    }
+
+    clean(): void {
+      console.log("Cleaning the machine...🧼");
     }
 
     private grindBeans(shots: number) {
@@ -55,17 +65,44 @@
     }
   }
 
-  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
-  console.log(maker);
-  maker.fillCoffeeBeans(32);
-  console.log(maker);
-  maker.makeCoffee(2);
-  console.log(maker);
+  // const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
+  // console.log(maker);
+  // maker.fillCoffeeBeans(32);
+  // console.log(maker);
+  // maker.makeCoffee(2);
+  // console.log(maker);
 
-  const maker2: CoffeeMaker = CoffeeMachine.makeMachine(65);
-  console.log(maker2);
-  // maker2.fillCoffeeBeans(23); // interface에 없기 때문에 사용 불가
-  console.log(maker2);
-  maker2.makeCoffee(5);
-  console.log(maker2);
+  // const maker2: CommercialCoffeeMaker = CoffeeMachine.makeMachine(65);
+  // console.log(maker2);
+  // maker2.fillCoffeeBeans(23); // CommercialCoffeeMaker interface에는 있기 때문에 사용 가능
+  // console.log(maker2);
+  // maker2.makeCoffee(5);
+  // console.log(maker2);
+  // maker.clean();
+
+  class AmateurUser {
+    constructor(private machine: CoffeeMaker) {}
+
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+    }
+  }
+
+  class ProBarista {
+    constructor(private machine: CommercialCoffeeMaker) {}
+
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+      this.machine.fillCoffeeBeans(45);
+      this.machine.clean();
+    }
+  }
+
+  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
+  const amateur = new AmateurUser(maker);
+  amateur.makeCoffee();
+  const proBarista = new ProBarista(maker);
+  proBarista.makeCoffee();
 }
