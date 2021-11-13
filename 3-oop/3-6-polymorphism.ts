@@ -66,13 +66,13 @@
       super(beans);
     }
 
-    private steamMlik(): void {
-      console.log("Steaming some mlik...🥛");
+    private steamMilk(): void {
+      console.log("Steaming some milk...🥛");
     }
 
     makeCoffee(shots: number): CoffeeCup {
       const coffee = super.makeCoffee(shots);
-      this.steamMlik();
+      this.steamMilk();
       return {
         ...coffee,
         hasMilk: true,
